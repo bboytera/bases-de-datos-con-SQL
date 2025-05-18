@@ -9,6 +9,7 @@ CREATE TABLE `clients` (
 
 CREATE TABLE `products` (
   `product_id` int UNSIGNED PRIMARY KEY  AUTO_INCREMENT,
+  `sku varchar` (20) NOT NULL UNIQUE,
   `name` varchar(100) NOT NULL,
   `slug` varchar(100) NOT NULL UNIQUE,
   `description` text,
