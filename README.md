@@ -24,56 +24,6 @@ El repositorio está organizado con archivos clave en la raíz:
 
 Realicé una serie de optimizaciones a mis tablas utilizando los comandos `UPDATE`  y `ALTER TABLE` ... `ADD COLUMN`, con el objetivo de mejorar la estructura y funcionalidad de la base de datos.Estas mejoras incluyeron la normalización de datos, la corrección de valores específicos, y la actualización de registros para reflejar cambios recientes. Incorporé nuevas columnas como `sku`, `stock`, `date_added`, `discount` y `price`, que permiten un control más detallado sobre los productos y sus movimientos en las facturas, llevé a cabo la inserción de los datos nuevos mediante el comando `INSERT`, con el propósito de poblar la base de datos y probar su funcionamiento. Estos datos me permitieron simular escenarios reales, validar relaciones entre tablas, y ejecutar consultas significativas.
 También establecí claves únicas para evitar duplicados (`email`, `slug`, `sku`), y utilicé funciones como `DEFAULT CURRENT_TIMESTAMP` y `on update CURRENT_TIMESTAMP` para mantener un registro automático y actualizado de cada operación. Estas optimizaciones mejoraron la consistencia, trazabilidad y eficiencia general de la base de datos.
-## TABLA clients
-+--------------+--------------+------+-----+---------+-----------------------------------------------+
-| Field        | Type         | Null | Key | Default | Extra                                         |
-+--------------+--------------+------+-----+---------+-----------------------------------------------+
-| client_id    | int unsigned | NO   | PRI | NULL    | auto_increment                                |
-| name         | varchar(100) | NO   |     | NULL    |                                               |
-| email        | varchar(30)  | NO   | UNI | NULL    |                                               |
-| phone_number | varchar(15)  | YES  |     | NULL    |                                               |
-| created_at   | timestamp    | NO   |     | now()   | DEFAULT_GENERATED                             |
-| updated_at   | timestamp    | NO   |     | now()   | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
-+--------------+--------------+------+-----+---------+-----------------------------------------------+
-## TABLA bills
-+------------+----------------------------+------+-----+---------+-----------------------------------------------+
-| Field      | Type                       | Null | Key | Default | Extra                                         |
-+------------+----------------------------+------+-----+---------+-----------------------------------------------+
-| bill_id    | int unsigned               | NO   | PRI | NULL    | auto_increment                                |
-| client_id  | int                        | NO   |     | NULL    |                                               |
-| total      | float                      | YES  |     | NULL    |                                               |
-| status     | enum('open','paid','lost') | NO   |     | open    |                                               |
-| created_at | timestamp                  | NO   |     | now()   | DEFAULT_GENERATED                             |
-| updated_at | timestamp                  | NO   |     | now()   | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
-+------------+----------------------------+------+-----+---------+-----------------------------------------------+
-## TABLA bill_products
-+-----------------+--------------+------+-----+---------+-----------------------------------------------+
-| Field           | Type         | Null | Key | Default | Extra                                         |
-+-----------------+--------------+------+-----+---------+-----------------------------------------------+
-| bill_product_id | int unsigned | NO   | PRI | NULL    | auto_increment                                |
-| product_id      | int unsigned | NO   |     | NULL    |                                               |
-| date_added      | datetime     | YES  |     | NULL    |                                               |
-| bill_id         | int unsigned | NO   |     | NULL    |                                               |
-| quantity        | int          | NO   |     | 1       |                                               |
-| created_at      | timestamp    | NO   |     | now()   | DEFAULT_GENERATED                             |
-| updated_at      | timestamp    | NO   |     | now()   | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
-| price           | float        | YES  |     | NULL    |                                               |
-| discount        | float        | YES  |     | NULL    |                                               |
-+-----------------+--------------+------+-----+---------+-----------------------------------------------+
-## TABLA products
-+-------------+---------------+------+-----+---------+-----------------------------------------------+
-| Field       | Type          | Null | Key | Default | Extra                                         |
-+-------------+---------------+------+-----+---------+-----------------------------------------------+
-| product_id  | int unsigned  | NO   | PRI | NULL    | auto_increment                                |
-| sku         | varchar(20)   | YES  | UNI | NULL    |                                               |
-| name        | varchar(100)  | NO   |     | NULL    |                                               |
-| slug        | varchar(100)  | NO   | UNI | NULL    |                                               |
-| description | text          | YES  |     | NULL    |                                               |
-| price       | decimal(10,2) | YES  |     | NULL    |                                               |
-| stock       | int           | NO   |     | 0       |                                               |
-| created_at  | timestamp     | NO   |     | now()   | DEFAULT_GENERATED                             |
-| updated_at  | timestamp     | NO   |     | now()   | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
-+-------------+---------------+------+-----+---------+-----------------------------------------------+
 
 ## Consultas en mi base de datos con SQL
 
