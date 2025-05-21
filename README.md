@@ -19,3 +19,8 @@ El repositorio está organizado con archivos clave en la raíz:
 - `insert_bill_products.sql`: Inserta registros en la tabla bill_products (detalles de cada factura, relacionando facturas con productos y cantidades).
 - `SELECT.sql`: Contiene consultas de ejemplo para extraer información de la base de datos (por ejemplo, joins entre tablas y agregaciones).
 - `DIAGRAMA.pdf`: Diagrama visual de la base de datos que muestra la estructura de tablas y sus relaciones.
+
+## Optimización de mis tablas
+
+Realicé una serie de optimizaciones a mis tablas utilizando los comandos `UPDATE`  y `ALTER TABLE` ... `ADD COLUMN`, con el objetivo de mejorar la estructura y funcionalidad de la base de datos.Estas mejoras incluyeron la normalización de datos, la corrección de valores específicos, y la actualización de registros para reflejar cambios recientes. Incorporé nuevas columnas como `sku`, `stock`, `date_added`, `discount` y `price`, que permiten un control más detallado sobre los productos y sus movimientos en las facturas, llevé a cabo la inserción de los datos nuevos mediante el comando `INSERT`, con el propósito de poblar la base de datos y probar su funcionamiento. Estos datos me permitieron simular escenarios reales, validar relaciones entre tablas, y ejecutar consultas significativas.
+También establecí claves únicas para evitar duplicados (`email`, `slug`, `sku`), y utilicé funciones como `DEFAULT CURRENT_TIMESTAMP` y `on update CURRENT_TIMESTAMP` para mantener un registro automático y actualizado de cada operación. Estas optimizaciones mejoraron la consistencia, trazabilidad y eficiencia general de la base de datos.
