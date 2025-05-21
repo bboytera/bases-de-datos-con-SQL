@@ -33,15 +33,15 @@ Finalmente, realicé consultas **SQL** orientadas a la segmentación y obtenció
 Durante el análisis de la base de datos, se realizaron múltiples consultas SQL para entender mejor el inventario de productos, los patrones de los usuarios y las facturas emitidas. A continuación, se resumen los hallazgos más importantes:
 
 ### 🛒 Inventario de Productos
-- Se identificaron 12 productos que cuestan menos de $100 y tienen un stock mayor a 50 unidades. Estos productos fueron ordenados por el valor total en existencias, revelando que el más valioso de esta categoría es "Heavy Duty Rubber Gloves" con una inversión total de $7,717.51.
+- Se identificaron **12 productos** que cuestan **menos de $100** y tienen un **stock mayor a 50 unidades**. Estos productos fueron ordenados por el valor total en existencias, revelando que el más valioso de esta categoría es **"Heavy Duty Rubber Gloves"** con una inversión total de **$7,717.51**.
 
-- Los 10 productos con mayor inversión en inventario (sin importar el precio) tienen un valor total en existencias que oscila entre $452,966 y $495,932, siendo el más significativo "Practical Copper Bench".
+- Los **10 productos con mayor inversión en inventario** (sin importar el precio) tienen un valor total en existencias que oscila entre **$452,966 y $495,932**, siendo el más significativo **"Practical Copper Bench"**.
 
-- En total, existen 2,358 productos en la base de datos, de los cuales 201 productos tienen un precio menor o igual a $500.
+- En total, existen **2,358** productos en la base de datos, de los cuales **201 productos** tienen un precio **menor o igual a $500**.
 
-- El total de unidades disponibles en el inventario es de 117,891 y el precio promedio de los productos es aproximadamente $2,539.
+- El total de unidades disponibles en el inventario es de **117,891** y el **precio promedio de los productos** es aproximadamente **$2,539**.
 
-- La inversión total en el inventario (precio × cantidad) asciende a $300,605,686.69.
+- La **inversión total en el inventario** (precio × cantidad) asciende a **$300,605,686.69**.
 
 ### 👥 Usuarios por Proveedor de Correo
 Se realizó un conteo del número de usuarios según su proveedor de correo:
@@ -57,11 +57,11 @@ Se realizó un conteo del número de usuarios según su proveedor de correo:
 Esto indica que **Yahoo** es el proveedor con más usuarios registrados, aunque la mayoría utiliza correos fuera de estos tres dominios.
 
 ### 🧾 Facturación e Ingresos
-Para conocer los ingresos reales, se calculó el monto total por factura, tomando en cuenta descuentos aplicados por producto. Se analizaron las primeras 20 facturas abiertas y se observó que:
+Para conocer los ingresos reales, se calculó el **monto total por factura**, tomando en cuenta descuentos aplicados por producto. Se analizaron las primeras 20 facturas abiertas y se observó que:
 
-- El total por factura (con descuentos) varía desde aproximadamente $598,187 hasta más de $1,130,000.
+- El total por factura (con descuentos) varía desde aproximadamente **$598,187** hasta más de **$1,130,000**.
 
-- El cliente con la factura de mayor valor es Mr. Lenny Hartmann Sr., con una factura de $1,138,482.
+- El cliente con la factura de mayor valor es **Mr. Lenny Hartmann Sr.**, con una factura de **$1,138,482**.
 
 - Estos valores se obtuvieron mediante un `JOIN` entre las tablas de facturas, clientes, productos y detalles de facturación, aplicando la fórmula:
 `total = SUM(cantidad × precio × (1 - descuento))`.
