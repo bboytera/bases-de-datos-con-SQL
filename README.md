@@ -24,3 +24,94 @@ El repositorio está organizado con archivos clave en la raíz:
 
 Realicé una serie de optimizaciones a mis tablas utilizando los comandos `UPDATE`  y `ALTER TABLE` ... `ADD COLUMN`, con el objetivo de mejorar la estructura y funcionalidad de la base de datos.Estas mejoras incluyeron la normalización de datos, la corrección de valores específicos, y la actualización de registros para reflejar cambios recientes. Incorporé nuevas columnas como `sku`, `stock`, `date_added`, `discount` y `price`, que permiten un control más detallado sobre los productos y sus movimientos en las facturas, llevé a cabo la inserción de los datos nuevos mediante el comando `INSERT`, con el propósito de poblar la base de datos y probar su funcionamiento. Estos datos me permitieron simular escenarios reales, validar relaciones entre tablas, y ejecutar consultas significativas.
 También establecí claves únicas para evitar duplicados (`email`, `slug`, `sku`), y utilicé funciones como `DEFAULT CURRENT_TIMESTAMP` y `on update CURRENT_TIMESTAMP` para mantener un registro automático y actualizado de cada operación. Estas optimizaciones mejoraron la consistencia, trazabilidad y eficiencia general de la base de datos.
+## TABLA clients
++--------------+--------------+------+-----+---------+-----------------------------------------------+
+| Field        | Type         | Null | Key | Default | Extra                                         |
++--------------+--------------+------+-----+---------+-----------------------------------------------+
+| client_id    | int unsigned | NO   | PRI | NULL    | auto_increment                                |
+| name         | varchar(100) | NO   |     | NULL    |                                               |
+| email        | varchar(30)  | NO   | UNI | NULL    |                                               |
+| phone_number | varchar(15)  | YES  |     | NULL    |                                               |
+| created_at   | timestamp    | NO   |     | now()   | DEFAULT_GENERATED                             |
+| updated_at   | timestamp    | NO   |     | now()   | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++--------------+--------------+------+-----+---------+-----------------------------------------------+
+## TABLA bills
++------------+----------------------------+------+-----+---------+-----------------------------------------------+
+| Field      | Type                       | Null | Key | Default | Extra                                         |
++------------+----------------------------+------+-----+---------+-----------------------------------------------+
+| bill_id    | int unsigned               | NO   | PRI | NULL    | auto_increment                                |
+| client_id  | int                        | NO   |     | NULL    |                                               |
+| total      | float                      | YES  |     | NULL    |                                               |
+| status     | enum('open','paid','lost') | NO   |     | open    |                                               |
+| created_at | timestamp                  | NO   |     | now()   | DEFAULT_GENERATED                             |
+| updated_at | timestamp                  | NO   |     | now()   | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++------------+----------------------------+------+-----+---------+-----------------------------------------------+
+## TABLA bill_products
++-----------------+--------------+------+-----+---------+-----------------------------------------------+
+| Field           | Type         | Null | Key | Default | Extra                                         |
++-----------------+--------------+------+-----+---------+-----------------------------------------------+
+| bill_product_id | int unsigned | NO   | PRI | NULL    | auto_increment                                |
+| product_id      | int unsigned | NO   |     | NULL    |                                               |
+| date_added      | datetime     | YES  |     | NULL    |                                               |
+| bill_id         | int unsigned | NO   |     | NULL    |                                               |
+| quantity        | int          | NO   |     | 1       |                                               |
+| created_at      | timestamp    | NO   |     | now()   | DEFAULT_GENERATED                             |
+| updated_at      | timestamp    | NO   |     | now()   | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
+| price           | float        | YES  |     | NULL    |                                               |
+| discount        | float        | YES  |     | NULL    |                                               |
++-----------------+--------------+------+-----+---------+-----------------------------------------------+
+## TABLA products
++-------------+---------------+------+-----+---------+-----------------------------------------------+
+| Field       | Type          | Null | Key | Default | Extra                                         |
++-------------+---------------+------+-----+---------+-----------------------------------------------+
+| product_id  | int unsigned  | NO   | PRI | NULL    | auto_increment                                |
+| sku         | varchar(20)   | YES  | UNI | NULL    |                                               |
+| name        | varchar(100)  | NO   |     | NULL    |                                               |
+| slug        | varchar(100)  | NO   | UNI | NULL    |                                               |
+| description | text          | YES  |     | NULL    |                                               |
+| price       | decimal(10,2) | YES  |     | NULL    |                                               |
+| stock       | int           | NO   |     | 0       |                                               |
+| created_at  | timestamp     | NO   |     | now()   | DEFAULT_GENERATED                             |
+| updated_at  | timestamp     | NO   |     | now()   | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+---------------+------+-----+---------+-----------------------------------------------+
+
+## Consultas en mi base de datos con SQL
+
+Finalmente, realicé consultas **SQL** orientadas a la segmentación y obtención de información relevante a partir de los datos almacenados. Este proyecto refleja el uso práctico de MySQL en la gestión de bases de datos, y demuestra cómo utilizar sus principales comandos para organizar, consultar y analizar información de manera eficiente.
+
+## 📊 Resultados del Análisis SQL
+Durante el análisis de la base de datos, se realizaron múltiples consultas SQL para entender mejor el inventario de productos, los patrones de los usuarios y las facturas emitidas. A continuación, se resumen los hallazgos más importantes:
+
+### 🛒 Inventario de Productos
+- Se identificaron 12 productos que cuestan menos de $100 y tienen un stock mayor a 50 unidades. Estos productos fueron ordenados por el valor total en existencias, revelando que el más valioso de esta categoría es "Heavy Duty Rubber Gloves" con una inversión total de $7,717.51.
+
+- Los 10 productos con mayor inversión en inventario (sin importar el precio) tienen un valor total en existencias que oscila entre $452,966 y $495,932, siendo el más significativo "Practical Copper Bench".
+
+- En total, existen 2,358 productos en la base de datos, de los cuales 201 productos tienen un precio menor o igual a $500.
+
+- El total de unidades disponibles en el inventario es de 117,891 y el precio promedio de los productos es aproximadamente $2,539.
+
+- La inversión total en el inventario (precio × cantidad) asciende a $300,605,686.69.
+
+### 👥 Usuarios por Proveedor de Correo
+Se realizó un conteo del número de usuarios según su proveedor de correo:
+
+- **Yahoo:** 16,096 usuarios
+
+- **Gmail:** 15,903 usuarios
+
+- **Hotmail:** 15,657 usuarios
+
+- **Otros proveedores:** 50,367 usuarios
+
+Esto indica que **Yahoo** es el proveedor con más usuarios registrados, aunque la mayoría utiliza correos fuera de estos tres dominios.
+
+### 🧾 Facturación e Ingresos
+Para conocer los ingresos reales, se calculó el monto total por factura, tomando en cuenta descuentos aplicados por producto. Se analizaron las primeras 20 facturas abiertas y se observó que:
+
+- El total por factura (con descuentos) varía desde aproximadamente $598,187 hasta más de $1,130,000.
+
+- El cliente con la factura de mayor valor es Mr. Lenny Hartmann Sr., con una factura de $1,138,482.
+
+- Estos valores se obtuvieron mediante un `JOIN` entre las tablas de facturas, clientes, productos y detalles de facturación, aplicando la fórmula:
+`total = SUM(cantidad × precio × (1 - descuento))`.
