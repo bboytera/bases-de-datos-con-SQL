@@ -1,4 +1,4 @@
-# Bases de Datos con SQL
+# Análisis de Base de Datos con SQL
 
 ## Descripción general del proyecto 📘
 
